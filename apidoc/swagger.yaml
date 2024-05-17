@@ -1,0 +1,5015 @@
+openapi: 3.0.0
+info:
+  title: AGL Institution
+  version: 1.0.0
+  description: "API's for AGL Institution"
+servers:
+  - url: "http://localhost:3001"
+  - url: "http://3.111.7.166:3001"
+tags:
+  - name: User
+    description: user APIs
+
+paths:
+  /auth/loginuser:
+    post:
+      tags:
+        - "Login"
+      summary: "User with valid email ID and password can login to the application"
+      description: "Here the user should have valid email ID and password. If the email ID and password is not valid it will throw some error otherwise it will send the admin name,security_id,org_id as response"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                admin_email:
+                  type: "string"
+                  example: "abc@gmail.com"
+                admin_password:
+                  type: "string"
+                  example: "Tharni@23"
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/User"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /auth/getUser:
+    post:
+      tags:
+        - "Login"
+      summary: "Get All admin and staff person of the particular organization "
+      description: "The list of members in the organization displays here according to the user's security type and org_id  they are A -> Admin, U -> represents User ,'' represents to get All the Admin and the Users"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                security_type:
+                  type: "string"
+                  example: "A"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"  
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/GetUser"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /auth/getsuperadmin:
+    post:
+      tags:
+        - "Login"
+      summary: "Here user get the super admin information"
+      description: "Super admin details display here"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                security_type:
+                  type: "string"
+                  example: "SA" 
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Getsuperadmin"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /auth/addUser:
+    post:
+      tags:
+        - "Login"
+      summary: "Add a user for that particular organization"
+      description: "Here user can Add a member for the particular organization.The mandatory fields are admin_name,admin_email,role_id,admin_password,address,org_id,created_by and admin_mobile"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                admin_name:
+                  type: "string"
+                  example: "Tharani"
+                admin_email:
+                  type: "string"
+                  example: "tharani@gmail.com"
+                role_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                address:
+                  type: "string"
+                  example: "abc"
+                admin_password:
+                  type: "string"
+                  example: "Tharni@23"
+                security_type:
+                  type: "string"
+                  example: "A"
+                admin_mobile:
+                  type: "string"
+                  example: "1234567890"
+                access_status:
+                  type: "string"
+                  example: "1"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"     
+                created_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55" 
+      responses:
+        200:
+          description: "User created successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /auth/updateUser:
+    post:
+      tags:
+        - "Login"
+      summary: "Update a user"
+      description: "Here user can Update a member for the particular organization.The mandatory fields are security_id,admin_name,admin_email,role_id,address,updated_by and admin_mobile"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                security_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                role_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                admin_name:
+                  type: "string"
+                  example: "Tharani"
+                admin_email:
+                  type: "string"
+                  example: "tharani@gmail.com"
+                address:
+                  type: "string"
+                  example: "abc"
+                admin_password:
+                  type: "string"
+                  example: "tharni@12"
+                security_type:
+                  type: "string"
+                  example: "A"
+                admin_password:
+                  type: "string"
+                  example: "Tharni@23"
+                admin_mobile:
+                  type: "string"
+                  example: "1234567890"
+                access_status:
+                  type: "string"
+                  example: "1"
+                updated_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"   
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"     
+      responses:
+        200:
+          description: "User updated successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /auth/deleteUser:
+    post:
+      tags:
+        - "Login"
+      summary: "Delete User"
+      description: "Here user can Delete a member from the particular organization.Here security_id and deleted_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                security_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                deleted_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"   
+      responses:
+        200:
+          description: "User deleted successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /auth/changepassword:
+    post:
+      tags:
+        - "Login"
+      summary: "Change password for the user"
+      description: "Here user can Change password for the user from the particular organization.Here security_id and admin_password are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                security_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                admin_password:
+                  type: "string"
+                  example: "tharni@12"
+                old_admin_password:
+                  type: "string"
+                  example: "12345"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Password updated succcessfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!" 
+  /auth/editUserstatus:
+    post:
+      tags:
+        - "Login"
+      summary: "Update counter access status"
+      description: "Here user can update status for the counter person who have registered (like Enable,disable)"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                security_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                access_status:
+                  type: "string"
+                  example: "1"
+      responses:
+        200:
+          description: "Status updated succcessfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"    
+  /student/addStudent:
+    post:
+      tags:
+        - "Student"
+      summary: "Add A Student"
+      description: "A student can added to the organization with their details.Here hall_ticket_number,admission_number,student_name,id,student_phone_number,org_id and created_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                hall_ticket_number:
+                  type: "string"
+                  example: "119149101045"
+                admission_number:
+                  type: "string"
+                  example: "12345"
+                student_name:
+                  type: "string"
+                  example: "Tharani"
+                jnanbhumi_number:
+                  type: "string"
+                  example: "12345"
+                aadhaar_number:
+                  type: "string"
+                  example: "12345"
+                id:
+                  type: "string"
+                  example: "22-ABCD-01"
+                student_phone_number:
+                  type: "string"
+                  example: "1234567890"
+                ssc:
+                  type: "string"
+                  example: "12345"
+                second_language:
+                  type: "string"
+                  example: "English"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55" 
+                created_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Student created successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /student/updatestud:
+    post:
+      tags:
+        - "Student"
+      summary: "Update a student"
+      description: "User can update a student with use of student_id for the organization with their other details.Here student_id,hall_ticket_number,admission_number,student_name,id,student_phone_number and updated_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                student_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                hall_ticket_number:
+                  type: "string"
+                  example: "119149101045"
+                admission_number:
+                  type: "string"
+                  example: "12345"
+                student_name:
+                  type: "string"
+                  example: "Tharani"
+                jnanbhumi_number:
+                  type: "string"
+                  example: "12345"
+                aadhaar_number:
+                  type: "string"
+                  example: "12345"
+                id:
+                  type: "string"
+                  example: "22-ABCD-01"
+                student_phone_number:
+                  type: "string"
+                  example: "1234567890"
+                ssc:
+                  type: "string"
+                  example: "12345"
+                second_language:
+                  type: "string"
+                  example: "English"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"  
+                updated_by:
+                  type:  "number"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Student updated successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /student/getStudent:
+    post:
+      tags:
+        - "Student"
+      summary: "Get all students"
+      description: "Here user can view all the student who are registered to their organization with the role name and their details as array"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                status:
+                  type: "string"
+                  example: "1" 
+                branch_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                academic_years_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                calendar_years_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Getstudent"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /student/deleteStudent:
+    post:
+      tags:
+        - "Student"
+      summary: "Delete a Student"
+      description: "Here a student can get deleted from the organization.Here student_id and deleted_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                student_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                deleted_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Student deleted successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /student/allocatebranchTostudent:
+    post:
+      tags:
+        - "Student"
+      summary: "Student allocated to the branch"
+      description: "Here a branch can get allocated to a student of the organization.Here student_id,branch_id,year,org_id and created_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                student_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                branch_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                academic_years_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                calendar_years_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                created_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Branch allocated to student successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /student/getbranchStudents:
+    post:
+      tags:
+        - "Student"
+      summary: "Get all students assigned to branch"
+      description: "Here user can view all the student who are registered to their organization with the and assigned to branch and their details as array. Here org_id, status are manadatory."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                status:
+                  type: "string"
+                  example: "1" 
+                branch_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                academic_years_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                calendar_years_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/GetBranchstudent"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /student/relieveStudents:
+   post:
+      tags:
+        - "Student"
+      summary: "Students get relieve from the organization"
+      description: "Students  get relieve from the organization"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                student_id:
+                  type: "array"
+                  example: "[6316f8cbaa00b2e407b90c55]"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55" 
+                status:
+                  type: "string"
+                  example: "1"
+                allocstatus:
+                  type: "string"
+                  example: "1"
+                # academic_years_id:
+                #   type: "string"
+                #   example: "6316f8cbaa00b2e407b90c55"
+                # calendar_years_id:
+                #   type: "string"
+                #   example: "6316f8cbaa00b2e407b90c55"
+                # branch_id:
+                #   type: "string"
+                #   example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Student relieved successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /student/getStudamtdetails:
+    post:
+      tags:
+        - "Student"
+      summary: "Get all students transaction details"
+      description: "Here user can view all the student ransaction details of their organization."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                student_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/GetStudamtdetails"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /dep/adddep:
+    post:
+      tags:
+        - "Department"
+      summary: "Add a Department"
+      description: "Here a Department can be added to the particular organization.Here org_id,dep_name and create_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dep_name:
+                  type: "string"
+                  example: "BA"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                create_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Department  created successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /dep/updatedep:
+    post:
+      tags:
+        - "Department"
+      summary: "Update a Department"
+      description: "Here user can update a particular department to the respective organization.Here dep_id,dep_name,status and updated_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dep_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                dep_name:
+                  type: "string"
+                  example: "BA"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"  
+                updated_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Department  updated successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /dep/deletedepDetails:
+    post:
+      tags:
+        - "Department"
+      summary: "Delete a Department"
+      description: "User can delete a particular department with the dep_id from the organization.Here dep_id and deleted_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dep_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"  
+                deleted_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"  
+      responses:
+        200:
+          description: "Department deleted successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /dep/getdep:
+    post:
+      tags:
+        - "Department"
+      summary: "Get Department"
+      description: "List of Department of the particular organization displays here"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55" 
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Getdepartment"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /staff/addStaffdep:
+    post:
+      tags:
+        - "Staff"
+      summary: "Add Staff to a Department"
+      description: "Staff can be added to the Department for a particular organization.Here staff_id,dep_id,org_id and created_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                staff_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                dep_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c56"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                created_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Staff allocation for the department was created successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /staff/updateStaffdep:
+    post:
+      tags:
+        - "Staff"
+      summary: "Update A Staff from a Department"
+      description: "Staff Can be updated to the Department using the alloc_id.Here staff_id,dep_id,alloc_id,status and updated_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                alloc_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                staff_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                dep_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55" 
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55" 
+                updated_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Staff allocation for the department was updated successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /staff/deletestaffdepDetails:
+    post:
+      tags:
+        - "Staff"
+      summary: "Delete Staff from Department"
+      description: "User can delete a Staff from the Department they are alloted for the respective organization.Here alloc_id and deleted_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                alloc_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"  
+                deleted_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Staff allocation for the department was deleted successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /staff/getStaffdep:
+    post:
+      tags:
+        - "Staff"
+      summary: "Get All Staff in the Department"
+      description: "User can view all the staffs and allocated departments they belong"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55" 
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Getstaff"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /branch/addbranch:
+    post:
+      tags:
+        - "Branch"
+      summary: "Add a Branch"
+      description: "Here a Branch for the student can be added to the particular organization.Here branch_name,org_id and create_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                branch_name:
+                  type: "string"
+                  example: "BA"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                create_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Branch  created Successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /branch/updatebranch:
+    post:
+      tags:
+        - "Branch"
+      summary: "Update a Branch"
+      description: "Here user can update a particular Branch to the respective organization.Here branch_name,branch_id,status and updated_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                branch_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                branch_name:
+                  type: "string"
+                  example: "BA"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"  
+                updated_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Branch  updated successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /branch/deletebranch:
+    post:
+      tags:
+        - "Branch"
+      summary: "Delete a Branch"
+      description: "User can delete a particular Branch with the branch_id from the organization.Here branch_id and deleted_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                branch_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                deleted_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"  
+      responses:
+        200:
+          description: "Branch deleted successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /branch/getbranch:
+    post:
+      tags:
+        - "Branch"
+      summary: "Get Branch"
+      description: "The list of Branch of that particular organization displays here"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55" 
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Getbranch"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /fee/addFee:
+    post:
+      tags:
+        - "Fee"
+      summary: "Add All Fee"
+      description: "Here Fees types like Admission, and TERM1 for every year get added and each fee type has the order for it. Here the user should send the subfeetype as an array.Here fee_type,access_status,fee_order,org_id and created_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fee_type:
+                  type: "string"
+                  example: "Admission"
+                access_status:
+                  type: "string"
+                  example: "1"
+                fee_order:
+                  type: "string"
+                  example: "1"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                subfeetype:
+                  type: "array"
+                  example: ["Term1","Term2"]
+                created_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Fee Type created successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /fee/updateFee:
+    post:
+      tags:
+        - "Fee"
+      summary: "Update A Fee"
+      description: "The fee type and order of the fee type get an update here.Here fee_type,access_status,fee_order,fee_id and updated_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fee_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                fee_type:
+                  type: "string"
+                  example: "STAT"
+                fee_order:
+                  type: "string"
+                  example: "1"
+                access_status:
+                  type: "string"
+                  example: "1"
+                status:
+                  type: "string"
+                  example: "1"
+                updated_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                subfeetype:
+                  type: "array"
+                  example: ["Term1","Term2"]
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Fee Type updated successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /fee/getFee:
+    post:
+      tags:
+        - "Fee"
+      summary: "Get All Fee"
+      description: "list of fee type and their subfeetype with it amount allocated get displays here"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55" 
+                access_status:
+                  type: "string"
+                  example: "1" 
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Getfee"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /fee/deletefee:
+    post:
+      tags:
+        - "Fee"
+      summary: "Delete A Fee Type"
+      description: "User can delete a fee type using fee_id and all the subfee_id also get deleted for the respective fee_id.Here fee_id and deleted_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fee_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                deleted_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Fee Type deleted successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /fee/updateaccessStatus:
+    post:
+      tags:
+        - "Fee"
+      summary: "Update AccessStatus Of A Fee Type"
+      description: "Access Status of a Fee type Can update the status here (like Active or Deactivate)"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fee_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                access_status:
+                  type: "string"
+                  example: "1"
+                updated_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/UpdateAccessStatus"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /branchfee/addbranchFee:
+    post:
+      tags:
+        - "Branch Fee"
+      summary: "Add a branchFee"
+      description: "Here user can allocate fees for the branches for every year.Here branch_id,year,sub_fee_id,amount,org_id,status and created_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                branch_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                sub_fee_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                amount:
+                  type: "string"
+                  example: "123"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55" 
+                status:
+                  type: "string"
+                  example: "1"
+                created_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                academic_years_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                # calendar_years_id:
+                #   type: "string"
+                #   example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Branch fees created successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /branchfee/updatebranchFee:
+    post:
+      tags:
+        - "Branch Fee"
+      summary: "update a branchFee"
+      description: "Here user can updated allocate fee for the branches for every year.Here branch_id,year,sub_fee_id,amount,branch_fee_id,status and updated_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                branch_fee_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                branch_id:
+                   type: "string"
+                   example: "6316f8cbaa00b2e407b90c55"
+                sub_fee_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                amount:
+                  type: "string"
+                  example: "123"
+                updated_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                academic_years_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                calendar_years_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Branch Fees updated successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /branchfee/getBranchFee:
+    post:
+      tags:
+        - "Branch Fee"
+      summary: "Get all Branch Fee"
+      description: "Here user can view all the Branch Fee with the subfeename and branch name with their respective fields as array org_id is mandatory"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                branch_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                academic_years_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                calendar_years_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55" 
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/GetBranchFee"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /branchfee/deleteBranchFee:
+    post:
+      tags:
+        - "Branch Fee"
+      summary: "Delete a Branch Fee"
+      description: "Here a  Fee allocated to a branch can get deleted from the organization.Here branch_fee_id is empty means all the branch_fee gets delete"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                branch_fee_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                deleted_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "BranchFee deleted successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /bill/addTransaction:
+    post:
+      tags:
+        - "Transaction"
+      summary: "Add A Transaction"
+      description: "User can pay fees for the particular branchfee/student for the particular organization.Here every transaction should be sended as array.Here mandatory feilds are student_id,sub_fee_id,payment_method,amount,cash,bank,upi,academic_years_id,calendar_years_id,created_by and org_id.Here academic_years_id and calendar_years_id should be the same id of the branchfeeid."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                student_id:
+                  type: "string"
+                  example: "631701117de46e0d0c76577f"
+                # sub_fee_id:
+                #   type: "string"
+                #   example: "6304aa5ce0ef051da2ed8b9d"
+                payment_method:
+                  type: "string"
+                  example: "C"
+                # amount:
+                #   type: "string"
+                #   example: "1000"
+                # cash:
+                #   type: "string"
+                #   example: "500"
+                # bank:
+                #   type: "string"
+                #   example: "500"
+                # upi:
+                #   type: "string"
+                #   example: "500"
+                bill_type:
+                  type: "string"
+                  example: "N"
+                transaction_type:
+                  type: "string"
+                  example: "N"
+                # academic_years_id:
+                #   type: "string"
+                #   example: "6316f8cbaa00b2e407b90c55"
+                # calendar_years_id:
+                #   type: "string"
+                #   example: "6316f8cbaa00b2e407b90c55"
+                # branch_id:
+                #   type: "string"
+                #   example: "6316f8cbaa00b2e407b90c55"
+                created_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                transaction:
+                  type: "array"
+                  example: [{sub_fee_id: "6316f8cbaa00b2e407b90c55", cash:500, bank: 500, upi: 500, amount:1500 }] 
+      responses:
+        200:
+          description: "Transaction created successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /bill/updateTransaction:
+    post:
+      tags:
+        - "Transaction"
+      summary: "Update A Transaction"
+      description: "User can pay fees for the particular branchfee/student for the particular organization. Here every transaction should be sended as array.Here every transaction should be sended as array.Here mandatory feilds are transaction_id,student_id,sub_fee_id,payment_method,amount,cash,bank,upi,academic_years_id,calendar_years_id,created_by.Here academic_years_id and calendar_years_id should be the same id of the branchfeeid."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                transaction_id:
+                  type: "string"
+                  example: "631701117de46e0d0c76577f"
+                student_id:
+                  type: "string"
+                  example: "631701117de46e0d0c76577f"
+                update_sub_fee_id:
+                  type: "string"
+                  example: "6304aa5ce0ef051da2ed8b9d"
+                sub_fee_id:
+                  type: "string"
+                  example: "6304aa5ce0ef051da2ed8b9d"
+                payment_method:
+                  type: "string"
+                  example: "C"
+                amount:
+                  type: "string"
+                  example: "1000"
+                cash:
+                  type: "string"
+                  example: "500"
+                bank:
+                  type: "string"
+                  example: "500"
+                upi:
+                  type: "string"
+                  example: "500"
+                bill_type:
+                  type: "string"
+                  example: "N" 
+                transaction_type:
+                  type: "string"
+                  example: "N"
+                # academic_years_id:
+                #   type: "string"
+                #   example: "6316f8cbaa00b2e407b90c55"
+                # calendar_years_id:
+                #   type: "string"
+                #   example: "6316f8cbaa00b2e407b90c55"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                # branch_id:
+                #   type: "string"
+                #   example: "6316f8cbaa00b2e407b90c55"
+                # status:
+                #   type: "string"
+                #   example: "1"
+                updated_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Transaction updated successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /bill/deleteTransaction:
+    post:
+      tags:
+        - "Transaction"
+      summary: "Delete A Transaction"
+      description: "User can pay fees for the particular branchfee/student for the particular organization. Here every transaction should be sended as array.Here every transaction should be sended as array.Here mandatory feilds are transaction_id,student_id,sub_fee_id,payment_method,amount,cash,bank,upi,academic_years_id,calendar_years_id,created_by.Here academic_years_id and calendar_years_id should be the same id of the branchfeeid."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                transaction_id:
+                  type: "string"
+                  example: "631701117de46e0d0c76577f"
+                sub_fee_id:
+                  type: "string"
+                  example: "6304aa5ce0ef051da2ed8b9d"       
+      responses:
+        200:
+          description: "Transaction deleted successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /bill/addmanualbillTransaction:
+    post:
+      tags:
+        - "Transaction"
+      summary: "Add A Manual Transaction"
+      description: "User can pay fees for the particular branchfee/student for the particular organization.Here every transaction should be sended as array.Here mandatory feilds are student_id,sub_fee_id,payment_method,amount,cash,bank,upi,academic_years_id,calendar_years_id,created_by and org_id.Here academic_years_id and calendar_years_id should be the same id of the branchfeeid"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                student_id:
+                  type: "string"
+                  example: "631701117de46e0d0c76577f"
+                sub_fee_id:
+                  type: "string"
+                  example: "6304aa5ce0ef051da2ed8b9d"
+                payment_method:
+                  type: "string"
+                  example: "C"
+                amount:
+                  type: "string"
+                  example: "1000"
+                cash:
+                  type: "string"
+                  example: "500"
+                bank:
+                  type: "string"
+                  example: "500"
+                upi:
+                  type: "string"
+                  example: "500"
+                bill_type:
+                  type: "string"
+                  example: "O"
+                transaction_type:
+                  type: "string"
+                  example: "N"
+                update_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                academic_years_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                calendar_years_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55" 
+                branch_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Transaction created successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /bill/updatemanualbillTransaction:
+    post:
+      tags:
+        - "Transaction"
+      summary: "Update A Manual Transaction"
+      description: "User can pay fees for the particular branchfee/student for the particular organization.Here every transaction should be sended as array.Here mandatory feilds are transaction_id,student_id,sub_fee_id,payment_method,amount,cash,bank,upi,academic_years_id,calendar_years_id,created_by.Here academic_years_id and calendar_years_id should be the same id of the branchfeeid"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                transaction_id:
+                  type: "string"
+                  example: "631701117de46e0d0c76577f"
+                student_id:
+                  type: "string"
+                  example: "631701117de46e0d0c76577f"
+                sub_fee_id:
+                  type: "string"
+                  example: "6304aa5ce0ef051da2ed8b9d"
+                payment_method:
+                  type: "string"
+                  example: "C"
+                amount:
+                  type: "string"
+                  example: "1000"
+                cash:
+                  type: "string"
+                  example: "500"
+                bank:
+                  type: "string"
+                  example: "500"
+                upi:
+                  type: "string"
+                  example: "500"
+                bill_type:
+                  type: "string"
+                  example: "O" 
+                transaction_type:
+                  type: "string"
+                  example: "N"
+                academic_years_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                calendar_years_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                status:
+                  type: "string"
+                  example: "1"
+                updated_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                branch_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Transaction updated successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /bill/getTransaction:
+    post:
+      tags:
+        - "Transaction"
+      summary: "Get All Transaction"
+      description: "Here user can view all the transaction made while paying the fees by the students for the particular organization is shown with student name with their details as array"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55" 
+                page:
+                  type: "number"
+                  example: "1" 
+                perpage:
+                  type: "number"
+                  example: "1" 
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Gettransaction"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /bill/getfinalamtstudent:
+    post:
+      tags:
+        - "Transaction"
+      summary: "Here user can view  all final balance amount of the students for the particular organization"
+      description: "Here User can make Final settlement the student"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55" 
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Finalamtstudent"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /bill/settlestudent:
+    post:
+      tags:
+        - "Transaction"
+      summary: "Each student detail"
+      description: "Here User can get Final settlement of a student of the particular organization."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                student_id:
+                  type: "string"
+                  example: "631701117de46e0d0c76577f"
+                status:
+                  type: "string"
+                  example: "1"
+      responses:
+        200:
+          description: "Transaction created successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /bill/finalamtsettlement:
+    post:
+      tags:
+        - "Transaction"
+      summary: "Final Transaction"
+      description: "Here User can make Final settlement for a student of the particular organization.Here every transaction should be sended as object.Here mandatory feilds are student_id,payment_method,amount,cash,bank,upi,created_by and org_id."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                student_id:
+                  type: "string"
+                  example: "631701117de46e0d0c76577f"
+                payment_method:
+                  type: "string"
+                  example: "C"
+                amount:
+                  type: "string"
+                  example: "1000"
+                cash:
+                  type: "string"
+                  example: "500"
+                bank:
+                  type: "string"
+                  example: "500"
+                upi:
+                  type: "string"
+                  example: "500"
+                bill_type:
+                  type: "string"
+                  example: "O"
+                transaction_type:
+                  type: "string"
+                  example: "N"
+                created_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55" 
+      responses:
+        200:
+          description: "Transaction created successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /bill/getrelievestudentdetails:
+    post:
+      tags:
+        - "Transaction"
+      summary: "get student details for the relieve and unrelieve students"
+      description: "Here User can get the student details for the relieve and unrelieve students. Here org_id and status are mandatory"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                org_id:
+                  type: "string"
+                  example: "631701117de46e0d0c76577f"
+                academic_years_id:
+                  type: "string"
+                  example: "631701117de46e0d0c76577f"
+                branch_id:
+                  type: "string"
+                  example: "631701117de46e0d0c76577f"
+                status:
+                  type: "string"
+                  example: "1"
+                branch_status:
+                  type: "string"
+                  example: "1"
+      responses:
+        200:
+          description: "Transaction created successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /bill/getbilldetails:
+    post:
+      tags:
+        - "Transaction"
+      summary: "get bill details for the Transaction"
+      description: "Here User can get the transaction details"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                bill_number:
+                  type: "string"
+                  example: "202211261"
+      responses:
+        200:
+          description: "Transaction created successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /role/addRole:
+    post:
+      tags:
+        - "Role"
+      summary: "Add A Role"
+      description: "Here User can add the Role for staff person or non-staff person.Here role_name,org_id and created_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role_name:
+                  type: "string"
+                  example: "Admin"
+                created_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"   
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Getbilldetails"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /role/updateRole:
+    post:
+      tags:
+        - "Role"
+      summary: "Update A Role"
+      description: "Here User can update the Role for the staff person or non-staff person. Here role_name,role_id and updated_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role_id:
+                  type: "string"
+                  example: "631701117de46e0d0c76577f"
+                role_name:
+                  type: "string"
+                  example: "Tharani"
+                created_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"  
+                updated_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55" 
+      responses:
+        200:
+          description: "Role updated successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /role/getRole:
+    post:
+      tags:
+        - "Role"
+      summary: "Get all Role"
+      description: "Here user can view all the Roles who are registered to their organization"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55" 
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Getrole"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /role/deleteRole:
+    post:
+      tags:
+        - "Role"
+      summary: "Delete A Role"
+      description: "User can delete a Role using role_id.Here role_id and deleted_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                deleted_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Role deleted successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /oldstuddue/addOldstuddue:
+    post:
+      tags:
+        - "Olddue"
+      summary: "Add A Olddue"
+      description: "Here user can add the olddue of the students for the particular organization.Here student_id,due_amount,org_id,status and created_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                student_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                old_due_amount:
+                  type: "string"
+                  example: "1000"
+                created_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"   
+                status:
+                  type: "string"
+                  example: "1"
+      responses:
+        200:
+          description: "OldDue created successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /oldstuddue/updateOldstuddue:
+    post:
+      tags:
+        - "Olddue"
+      summary: "Update A Olddue"
+      description: "Here user can update the olddue of the students for the particular organization.Here student_id,due_amount,autoid,status and updated_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                autoid:
+                  type: "string"
+                  example: "631701117de46e0d0c76577f"
+                student_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                old_due_amount:
+                  type: "string"
+                  example: "1000"
+                updated_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"  
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"  
+      responses:
+        200:
+          description: "OldDue updated successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /oldstuddue/getOldstuddue:
+    post:
+      tags:
+        - "Olddue"
+      summary: "Get all Olddue"
+      description: "Here user can view all the old due of the student  to their organization"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55" 
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/GetOlddue"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /oldstuddue/deleteOldstuddue:
+    post:
+      tags:
+        - "Olddue"
+      summary: "Delete A Olddue"
+      description: "User can delete an Olddue using autoid for a student to their organization.Here autoid and deleted_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                autoid:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                deleted_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "OldDue deleted successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /expenses/addExpenses:
+    post:
+      tags:
+        - "Expenses"
+      summary: "Add A Expenses"
+      description: "User can add the expenses or collection of the particular organization.Here amount,expenses_to,reason,type,accept_url,reject_url,wait_url,org_id and created_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: "string"
+                  example: "1000"
+                expenses_to:
+                  type: "string"
+                  example: "OLD CASH BALANCE"
+                expense_type:
+                  type: "string"
+                  example: "C"
+                reason:
+                  type: "string"
+                  example: "OLD CASH BALANCE"
+                type:
+                  type: "string"
+                  example: "C"
+                accept_url:
+                  type: "string"
+                  example: "abc"
+                reject_url:
+                  type: "string"
+                  example: "abc"
+                wait_url:
+                  type: "string"
+                  example: "abc"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"   
+                created_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Expenses created successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /expenses/getExpenses:
+    post:
+      tags:
+        - "Expenses"
+      summary: "Get All Expenses"
+      description: "User can get the expenses or collection of the particular organization.Here org_id  are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"   
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/GetExpenses"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /expenses/changestatusvalue:
+    post:
+      tags:
+        - "Expenses"
+      summary: "Update Expenses Status"
+      description: ""
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: "string"
+                  example: "A"
+                expenses_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Expenses created successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /org/addOrg:
+    post:
+      tags:
+        - "Organization"
+      summary: "Add A Organization"
+      description: "Here user can add the Organization.Here org_name and created_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                org_name:
+                  type: "string"
+                  example: "AGL"
+                created_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Organization created successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /org/updateorg:
+    post:
+      tags:
+        - "Organization"
+      summary: "Update A Organization"
+      description: "Here user can update the Organization. Here org_id,org_name and updated_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                org_id:
+                  type: "string"
+                  example: "631701117de46e0d0c76577f"
+                org_name:
+                  type: "string"
+                  example: "AGL"
+                updated_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"  
+      responses:
+        200:
+          description: "Organization updated successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /org/getorg:
+    post:
+      tags:
+        - "Organization"
+      summary: "Get all organization"
+      description: "Here user can view all organization"
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/GetOrg"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /org/updateorgstatus:
+    post:
+      tags:
+        - "Organization"
+      summary: "Update A Organization status"
+      description: "Here user can update the Organization status. Here org_id,status and updated_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                org_id:
+                  type: "string"
+                  example: "631701117de46e0d0c76577f"
+                status:
+                  type: "string"
+                  example: "1"
+                updated_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"  
+      responses:
+        200:
+          description: "Organization updated successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /basemenu/addbasemenu:
+    post:
+      tags:
+        - "Base menu"
+      summary: "Add A Base menu"
+      description: "Here user can add the base menu for all organization.Here menu_name,menu_type,menu_order and created_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                menu_name:
+                  type: "string"
+                  example: "Master"
+                menu_type:
+                  type: "string"
+                  example: "p"
+                menu_order:
+                  type: "string"
+                  example: "1"   
+                menu_web_url:
+                  type: "string"
+                  example: "/dashboard"
+                parent_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                web_class_name:
+                  type: "string"
+                  example: "menu-toggle has-dropdown"
+                web_icon:
+                  type: "string"
+                  example: "briefcase"
+                created_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"  
+      responses:
+        200:
+          description: "Basemenu added successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /basemenu/updatebasemenu:
+    post:
+      tags:
+        - "Base menu"
+      summary: "Update A Base menu"
+      description: "Here user can update the base menu for all organization.Here menu_object_id,menu_name,menu_type,menu_order and updated_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                menu_object_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"  
+                menu_name:
+                  type: "string"
+                  example: "Master"
+                menu_type:
+                  type: "string"
+                  example: "p"
+                menu_order:
+                  type: "string"
+                  example: "1"   
+                menu_web_url:
+                  type: "string"
+                  example: "/dashboard"
+                parent_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                web_class_name:
+                  type: "string"
+                  example: "menu-toggle has-dropdown"
+                web_icon:
+                  type: "string"
+                  example: "briefcase"
+                updated_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"   
+      responses:
+        200:
+          description: "Basemenu updated successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /basemenu/getbasemenu:
+    post:
+      tags:
+        - "Base menu"
+      summary: "Get all Base menu"
+      description: "Here user can view all the base menu"
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/GetBasemenu"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /basemenu/deletebasemenu:
+    post:
+      tags:
+        - "Base menu"
+      summary: "Delete A base menu"
+      description: "Here user can delete the base menu  for all organization.Here menu_object_id and deleted_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                menu_object_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                deleted_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Basemenu deleted successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /orgmenu/addmenuorg:
+    post:
+      tags:
+        - "Menus for organization"
+      summary: "Add menus for the organization"
+      description: "Here user can add menu for the organization. Here menu_object_id,org_id and created_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                menu_object_id:
+                  type: "array"
+                  example: ["6316f8cbaa00b2e407b90c55"]
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                created_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Organization's menu added successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /orgmenu/getmenuorg:
+    post:
+      tags:
+        - "Menus for organization"
+      summary: "get all menus for the organization"
+      description: "Here user can view all the menu to their organization"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55" 
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Getmenuorg"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /roleorgmenu/addrolemenuorg:
+    post:
+      tags:
+        - "Menus for organization to particular role"
+      summary: "Add menus for the organization to particular role"
+      description: "Here user can add menu for the organization to particular role. Here menu_object_id,org_id,role_id and created_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                menu_object_id:
+                  type: "array"
+                  example: ["6316f8cbaa00b2e407b90c55"]
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                role_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                created_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Organization's menu for the role added successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /roleorgmenu/getrolemenuorg:
+    post:
+      tags:
+        - "Menus for organization to particular role"
+      summary: "get all menus for the organization to particular role"
+      description: "Here user can view all the menu to their organization to particular role"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55" 
+                role_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Getrolemenuorg"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /roleorgmenu/deleterolemenuorg:
+    post:
+      tags:
+        - "Menus for organization to particular role"
+      summary: "Delete menus for the organization to particular role"
+      description: "Here user can delete menu for the organization to particular role. Here menu_object_id,org_id,role_id and created_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role_org_menu_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                deleted_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Organization's menu for the role deleted successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /calendaryear/addcalendaryear:
+    post:
+      tags:
+        - "Calendar year"
+      summary: "Add year for the organization to calendar year"
+      description: "Here user can add year for the organization to particular calendar year. Here calendar_year,calendar_year_value,org_id and created_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                calendar_year:
+                  type: "string"
+                  example: "2020-2021"
+                calendar_year_value:
+                  type: "string"
+                  example: "2020"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                created_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                current_active:
+                  type: "string"
+                  example: "1"
+      responses:
+        200:
+          description: "Calendar Year added successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /calendaryear/updatecalendaryear:
+    post:
+      tags:
+       - "Calendar year"
+      summary: "Update  year for the organization to calendar year"
+      description: "Here user can update year for the organization to particular calendar year. Here calendar_year_id,calendar_year,calendar_year_value,status and updated_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                calendar_year_id:
+                  type: "string"
+                  example: "631701117de46e0d0c76577f"
+                calendar_year:
+                  type: "string"
+                  example: "2020-2021"
+                calendar_year_value:
+                  type: "string"
+                  example: "2020"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55" 
+                updated_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                current_active:
+                  type: "string"
+                  example: "1"
+      responses:
+        200:
+          description: "Calendar Year updated successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /calendaryear/getcalendaryear:
+    post:
+      tags:
+        - "Calendar year"
+      summary: "get all years alloted as calendar year for the organization"
+      description: "Here user can get all years alloted as calendar year for the organization"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55" 
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Getcalendaryear"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /calendaryear/deletecalendaryear:
+    post:
+      tags:
+        - "Calendar year"
+      summary: "Delete year for the organization to calendar year"
+      description: "Here user can delete a year for the organization to particular calendar year. Here calendar_year_id and deleted_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                calendar_year_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                deleted_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Calendar Year deleted successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /academicyear/addacademicyear:
+    post:
+      tags:
+        - "Academic year"
+      summary: "Add year for the organization to academic year"
+      description: "Here user can add year for the organization to particular academic year. Here academic_year,academic_year_value,org_id and created_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                academic_year:
+                  type: "string"
+                  example: "1st year"
+                academic_year_value:
+                  type: "string"
+                  example: "1"
+                order:
+                  type: "string"
+                  example: "1"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                created_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Academic Year added successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /academicyear/updateacademicyear:
+    post:
+      tags:
+       - "Academic year"
+      summary: "Update  year for the organization to academic year"
+      description: "Here user can update year for the organization to particular academic year. Here academic_year_id,academic_year,academic_year_value,status and updated_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                academic_year_id:
+                  type: "string"
+                  example: "631701117de46e0d0c76577f"
+                academic_year:
+                  type: "string"
+                  example: "1st year"
+                academic_year_value:
+                  type: "string"
+                  example: "1"
+                order:
+                  type: "string"
+                  example: "1"
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                updated_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Academic Year updated successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /academicyear/getacademicyear:
+    post:
+      tags:
+        - "Academic year"
+      summary: "get all years alloted as academic year for the organization"
+      description: "Here user can get all years alloted as academic year for the organization"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55" 
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Getacademicyear"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /academicyear/deleteacademicyear:
+    post:
+      tags:
+        - "Academic year"
+      summary: "Delete year for the organization to academic year"
+      description: "Here user can delete a year for the organization to particular academic year. Here academic_year_id and deleted_by are mandatory fields"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                academic_year_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                deleted_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "calendar Year deleted successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /concession/addconcession:
+    post:
+      tags:
+       - "Concession"
+      summary: "Create Concesssion for students"
+      description: "Here user can create concesssion for students for the organization.Here mandatory feilds are org_id,created_by atleast a concession"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/Addconcessionfee"
+                - type: object
+                  properties:
+                    concessions:
+                      type: "array"
+                      items:
+                        $ref: "#/components/schemas/Addconcession"
+      responses:
+        200:
+          description: "Concession  created successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /concession/updateconcessionName:
+    post:
+      tags:
+       - "Concession"
+      summary: "Update Concesssion name"
+      description: "Here user can update concesssion name for the organization.Here mandatory feilds are org_id,branch_id,created_by atleast a concession"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                concession_slab_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                # branch_id:
+                #   type: "string"
+                #   example: "6316f8cbaa00b2e407b90c55"
+                concession_slab:
+                  type: "string"
+                  example: "concessionname"
+                updated_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Concession  updated successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /concession/updateconcession:
+    post:
+      tags:
+       - "Concession"
+      summary: "Update Concesssion"
+      description: "Here user can update concesssion for students for the organization.Here mandatory feilds are org_id,branch_id,created_by atleast a concession"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/Updateconcessionfee"
+                - type: object
+                  properties:
+                    concessions:
+                      type: "array"
+                      items:
+                        $ref: "#/components/schemas/Updateconcession"
+      responses:
+        200:
+          description: "Concession  updated successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /concession/deleteconcession:
+    post:
+      tags:
+        - "Concession"
+      summary: "Delete  Concesssion"
+      description: "Here user can delete concesssion for students for the organization.Here mandatory feilds are org_id,branch_id,created_by atleast a concession"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                concession_slab_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                deleted_by:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Concession  deleted successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /concession/addstudentconcession:
+    post:
+      tags:
+        - "Concession"
+      summary: "concession allocate to the student"
+      description: "Here user allocate the concession for a student. Here studconcession_id is mandatory."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/Addstudconcessionfee"
+                - type: object
+                  properties:
+                    concessions:
+                      type: "array"
+                      items:
+                        $ref: "#/components/schemas/Addstudconcession"
+      responses:
+        200:
+          description: "Concession allocated for the student created successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /concession/updatestudconcession:
+    post:
+      tags:
+        - "Concession"
+      summary: "update the concession status for approval"
+      description: "Here user update the concession status for approval. Here studconcession_id is mandatory."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                studconcession_id:
+                  type: "array"
+                  example: "[6316f8cbaa00b2e407b90c55]"
+                concession_status:
+                  type: "string"
+                  example: "a"
+      responses:
+        200:
+          description: "Concession updated successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /concession/deletestudconcession:
+    post:
+      tags:
+        - "Concession"
+      summary: "update the concession status for reject"
+      description: "Here user update the concession status for reject. Here studconcession_id is mandatory."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                studconcession_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+                concession_status:
+                  type: "string"
+                  example: "a"
+                sub_fee_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55"
+      responses:
+        200:
+          description: "Concession deleted successfully"
+        409:
+          description: "Please provide mandatory fields !!!"
+        606:
+          description: "Something went wrong !!!"
+  /concession/getconcession:
+    post:
+      tags:
+        - "Concession"
+      summary: "user can get the concession"
+      description: "Here user can get all the concession  for the organization"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55" 
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Getconcession"
+  /concession/getstudconcession:
+    post:
+      tags:
+        - "Concession"
+      summary: "user can get the concession allocated to the student"
+      description: "Here user can get all the concession allocated to the student for the organization"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                org_id:
+                  type: "string"
+                  example: "6316f8cbaa00b2e407b90c55" 
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Getstudconcession"
+components:
+  securitySchemes:
+    x-access-token:
+      type: apiKey
+      in: header
+      name: x-access-token
+  schemas:
+    User:
+      type: object
+      properties:
+        security_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here security_id the id which is get while creation  of user and it can get from getuser under user"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here  org_id  is the id  which is get while creation of organization and it can get from getorg under org"
+        admin_name:
+          type: "string"
+          example: "tharani"
+    Adduser:
+      type: object
+      properties:
+        admin_name:
+          type: "string"
+          example: "Tharani"
+        admin_email:
+          type: "string"
+          example: "abc@gmail.com"
+        admin_password:
+          type: "string"
+          example: "12345"
+        admin_mobile:
+          type: "string"
+          example: "9876543210"
+        address:
+          type: "string"
+          example: "Tharani"
+        role_id:
+          type: "string"
+          example: "Admin"
+          description: "Here role_id is the id which is get while creation of role and it can get from getrole under role"
+        security_type:
+          type: "string"
+          example: "A"
+          description: "A -> Admin, U -> represents User ,'' represents All the Admin and the Users"
+        access_status:
+          type: "string"
+          example: "1"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55" 
+          description: "Here  org_id  is the id  which is get while creation of organization and it can get from getorg under org"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55" 
+    UpdateUser:
+      type: object
+      properties:
+        security_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here security_id the id which is get while creation  of user and it can get from getuser under user"
+        admin_name:
+          type: "string"
+          example: "Tharani"
+        admin_email:
+          type: "string"
+          example: "tharani@gmail.com"
+        role_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here role_id is the id which is get while creation of role and it can get from getrole under role"
+        address:
+          type: "string"
+          example: "abc"
+        admin_password:
+          type: "string"
+          example: "tharni@12"
+        security_type:
+          type: "string"
+          example: "A"
+          description: "A -> Admin, U -> represents User ,'' represents All the Admin and the Users"
+        admin_password:
+          type: "string"
+          example: "Tharni@23"
+        admin_mobile:
+          type: "string"
+          example: "1234567890"
+        access_status:
+          type: "string"
+          example: "1"
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"    
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    GetUser:
+      type: object
+      properties:
+        _id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here _id is the security_id which is get while creation  of user"
+        admin_name:
+          type: "string"
+          example: "Tharani"
+        admin_email:
+          type: "string"
+          example: "abc@gmail.com"
+        admin_mobile:
+          type: "string"
+          example: "9876543210"
+        address:
+          type: "string"
+          example: "Tharani"
+        role_id:
+          type: "string"
+          example: "Admin"
+          description: "Here role_id is the id which is get while creation of role and it can get from getrole under role"
+        status:
+          type: "string"
+          example: "1"
+        security_type:
+          type: "string"
+          example: "A"
+          description: "A -> Admin, U -> represents User ,'' represents All the Admin and the Users"
+        access_status:
+          type: "string"
+          example: "1"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55" 
+          description: "Here  org_id  is the id  which is get while creation of organization and it can get from getorg under org"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55" 
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        deleted_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        created_date_time:
+          type: "string"
+          example: "2022-09-24 10:45:15"
+        rolename:
+          type: "array"
+          example: "[respective fields of rolename]"
+    Getsuperadmin:
+      type: object
+      properties:
+        _id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        admin_name:
+          type: "string"
+          example: "Tharani"
+        admin_email:
+          type: "string"
+          example: "abc@gmail.com"
+        admin_mobile:
+          type: "string"
+          example: "9876543210"
+        address:
+          type: "string"
+          example: "none"
+        role_id:
+          type: "string"
+          example: "0"
+        status:
+          type: "string"
+          example: "1"
+        security_type:
+          type: "string"
+          example: "SA"
+          description: "SA -> Super Admin"
+        access_status:
+          type: "string"
+          example: "1"
+        org_id:
+          type: "string"
+          example: "0" 
+    DeleteUser:
+      type: object
+      properties:
+        security_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here security_id the id which is get while creation  of user and it can get from getuser under user"
+        deleted_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Addstudent:
+      type: object
+      properties:
+        hall_ticket_number:
+          type: "string"
+          example: "119149101045"
+        admission_number:
+          type: "string"
+          example: "12345"
+        student_name:
+          type: "string"
+          example: "Tharani"
+        jnanbhumi_number:
+          type: "string"
+          example: "12345"
+        aadhaar_number:
+          type: "string"
+          example: "12345"
+        id:
+          type: "string"
+          example: "22-ABCD-01"
+        student_phone_number:
+          type: "string"
+          example: "1234567890"
+        ssc:
+          type: "string"
+          example: "12345"
+        second_language:
+          type: "string"
+          example: "English"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55" 
+          description: "Here  org_id  is the id  which is get while creation of organization and it can get from getorg under org"
+        status:
+          type: "string"
+          example: "1"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Updatestudent:
+       type: object
+        properties:
+          student_id:
+            type: "string"
+            example: "6316f8cbaa00b2e407b90c55"
+            description: "Here student_id is the id which is get while creation of student and it can get from getstudent under student"
+          hall_ticket_number:
+            type: "string"
+            example: "119149101045"
+          admission_number:
+            type: "string"
+            example: "12345"
+          student_name:
+            type: "string"
+            example: "Tharani"
+          jnanbhumi_number:
+            type: "string"
+            example: "12345"
+          aadhaar_number:
+            type: "string"
+            example: "12345"
+          id:
+            type: "string"
+            example: "22-ABCD-01"
+          student_phone_number:
+            type: "string"
+            example: "1234567890"
+          ssc:
+            type: "string"
+            example: "12345"
+          second_language:
+            type: "string"
+            example: "English"
+          status:
+            type: "string"
+            example: "1"
+          updated_by:
+            type:  "number"
+            example: "6316f8cbaa00b2e407b90c55"
+    Getstudent:
+      type: object
+      properties:
+          _id:
+            type: "string"
+            example: "6316f8cbaa00b2e407b90c55"
+          hall_ticket_number:
+            type: "string"
+            example: "119149101045"
+          admission_number:
+            type: "string"
+            example: "12345"
+          student_name:
+            type: "string"
+            example: "Tharani"
+          jnanbhumi_number:
+            type: "string"
+            example: "12345"
+          aadhaar_number:
+            type: "string"
+            example: "12345"
+          id:
+            type: "string"
+            example: "22-ABCD-01"
+          student_phone_number:
+            type: "string"
+            example: "1234567890"
+          ssc:
+            type: "string"
+            example: "12345"
+          second_language:
+            type: "string"
+            example: "English"
+          org_id:
+            type: "string"
+            example: "6316f8cbaa00b2e407b90c55" 
+          status:
+            type: "string"
+            example: "1"
+          created_by:
+            type: "string"
+            example: "6316f8cbaa00b2e407b90c55"
+          updated_by:
+            type: "string"
+            example: "6316f8cbaa00b2e407b90c55"
+          deleted_by:
+            type: "string"
+            example: "6316f8cbaa00b2e407b90c55"
+          created_date_time:
+            type: "string"
+            example: "2022-09-24 10:45:15"
+    GetBranchstudent:
+      type: object
+      properties:
+          _id:
+            type: "string"
+            example: "6316f8cbaa00b2e407b90c55"
+          student_id:
+            type: "string"
+            example: "6316f8cbaa00b2e407b90c55"
+          branch_id:
+            type: "string"
+            example: "6316f8cbaa00b2e407b90c55"
+          academic_years_id:
+            type: "string"
+            example: "6316f8cbaa00b2e407b90c55"
+          calendar_years_id:
+            type: "string"
+            example: "6316f8cbaa00b2e407b90c55"
+          calendar_year:
+            type: "string"
+            example: "2022-2023"
+          academic_year:
+            type: "string"
+            example: "1st year"
+          branch_name:
+            type: "string"
+            example: "BA"
+          hall_ticket_number:
+            type: "string"
+            example: "119149101045"
+          admission_number:
+            type: "string"
+            example: "12345"
+          student_name:
+            type: "string"
+            example: "Tharani"
+          jnanbhumi_number:
+            type: "string"
+            example: "12345"
+          aadhaar_number:
+            type: "string"
+            example: "12345"
+          id:
+            type: "string"
+            example: "22-ABCD-01"
+          student_phone_number:
+            type: "string"
+            example: "1234567890"
+          ssc:
+            type: "string"
+            example: "12345"
+          second_language:
+            type: "string"
+            example: "English"
+          org_id:
+            type: "string"
+            example: "6316f8cbaa00b2e407b90c55" 
+          status:
+            type: "string"
+            example: "1"
+          created_by:
+            type: "string"
+            example: "6316f8cbaa00b2e407b90c55"
+          updated_by:
+            type: "string"
+            example: "6316f8cbaa00b2e407b90c55"
+          deleted_by:
+            type: "string"
+            example: "6316f8cbaa00b2e407b90c55"
+          created_date_time:
+            type: "string"
+            example: "2022-09-24 10:45:15"
+    Adddepartment:
+      type: object
+      properties:
+        dep_name:
+          type: "string"
+          example: "BA"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here  org_id  is the id  which is get while creation of organization and it can get from getorg under org"
+        create_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Updatedepartment:
+      type: object
+      properties:
+        dep_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here dep_id the id which is get while creation of department and it can get from getdepartment under department"
+        dep_name:
+          type: "string"
+          example: "BA"
+        status:
+          type: "string"
+          example: "1"
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Getdepartment:
+      type: object
+      properties:
+        _id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here _id the dep_id which is get while creation of department and it can get from getdepartment under department"
+        dep_name:
+          type: "string"
+          example: "BA"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here  org_id  is the id  which is get while creation of organization and it can get from getorg under org"
+        status:
+          type: "string"
+          example: "1"
+        create_by:
+          type: "string"
+          example: "1"
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        deleted_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        created_date_time:
+          type: "string"
+          example: "2022-09-24 10:45:15"
+    Deletedepartment:
+      type: object
+      properties:
+        dep_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here dep_id the id which is get while creation of department and it can get from getdepartment under department"
+        deleted_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Addstaff:
+      type: object
+      properties:
+        staff_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here the staff_id is said to be the security_id of the staff of the organization"
+        dep_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here dep_id the id which is get while creation of department and it can get from getdepartment under department"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here org_id is the id which is get while creation of organization and it can get from getorg under org"
+        status:
+          type: "string"
+          example: "1"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Updatestaff:
+      type: object
+      properties:
+        alloc_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here the alloc_id is the id which is get while creation of allocation of the staff to department of the organization"
+        staff_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here the staff_id is said to be the security_id of the staff of the organization"
+        dep_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here dep_id the id which is get while creation of department and it can get from getdepartment under department"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55" 
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Getstaff:
+      type: object
+      properties:
+        _id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here the _id  is alloc_id the  which is get while creation of allocation of the staff to department of the organization"
+        staff_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here the staff_id is said to be the security_id of the staff of the organization"
+        dep_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here dep_id the id which is get while creation of department and it can get from getdepartment under department"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here  org_id  is the id  which is get while creation of organization and it can get from getorg under org"
+        status:
+          type: "string"
+          example: "1"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        deleted_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        created_date_time:
+          type: "string"
+          example: "2022-09-24 10:45:15"
+        departmentname:
+          type: "array"
+          example: "[respective fields of department]"
+        username:
+          type: "array"
+          example: "[respective fields of user]"
+    Deletestaff:
+      type: object
+      properties:
+        alloc_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here the alloc_id is the id which is get while creation of allocation of the staff to department of the organization"
+        deleted_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Addfee:
+      type: object
+      properties:
+        fee_type:
+          type: "string"
+          example: "Admission"
+        access_status:
+          type: "string"
+          example: "1"
+        fee_order:
+          type: "string"
+          example: "1"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here  org_id  is the id  which is get while creation of organization and it can get from getorg under org"
+        status:
+          type: "string"
+          example: "1"
+        subfeetype:
+          type: "array"
+          example: ["Term1","Term2"]
+          description: "here the Before the term1 .. there should be double quotes after that array  be placed. Inside the array the double quotes should have prefix of / in it"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Updatefee:
+      type: object
+      properties:
+        fee_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here fee_id  is the id which is get while creation of fee and it can get from getfee under fee"
+        fee_type:
+          type: "string"
+          example: "STAT"
+        fee_order:
+          type: "string"
+          example: "1"
+        status:
+          type: "string"
+          example: "1"
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        access_status:
+          type: "string"
+          example: "1"
+        subfeetype:
+          type: "array"
+          example: ["Term1","Term2"]
+          description: "here the Before the term1 .. there should be double quotes after the array should be placed inside the array the double quotes should have prefix of / in it"
+    Getfee:
+      type: object
+      properties:
+        _id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here _id is the  fee_id which is get while creation of fee"
+        fee_type:
+          type: "string"
+          example: "STAT"
+        fee_order:
+          type: "string"
+          example: "1"
+        access_status:
+          type: "string"
+          example: "1"
+        status:
+          type: "string"
+          example: "1"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here  org_id  is the id  which is get while creation of organization and it can get from getorg under org"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        deleted_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        created_date_time:
+          type: "string"
+          example: "2022-09-24 10:45:15"
+        subfeename:
+          type: "array"
+          example: "[respective fields of subfeename]"
+    Deletefee:
+      type: object
+      properties:
+          fee_id:
+            type: "string"
+            example: "6316f8cbaa00b2e407b90c55"
+            description: "Here fee_id  is the id which is get while creation of fee and it can get from getfee under fee"
+          deleted_by:
+            type: "string"
+            example: "6316f8cbaa00b2e407b90c55"
+    UpdateAccessStatus:
+      type: object
+      properties:
+        fee_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here fee_id  is the id which is get while creation of fee and it can get from getfee under fee"
+        access_status:
+          type: "string"
+          example: "1"
+    Addbranch:
+      type: object
+      properties:
+        branch_name:
+          type: "string"
+          example: "BA"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here  org_id  is the id  which is get while creation of organization and it can get from getorg under org"
+        create_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Updatebranch:
+      type: object
+      properties:
+        branch_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here Branch_id is the id  which is get while creation of branch and it can get from getbranch under branch"
+        branch_name:
+          type: "string"
+          example: "BA"
+        status:
+          type: "string"
+          example: "1"
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Getbranch:
+      type: object
+      properties:
+        _id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here _id is the Branch_id which is get while creation of branch"
+        branch_name:
+          type: "string"
+          example: "BA"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here  org_id  is the id  which is get while creation of organization and it can get from getorg under org"
+        status:
+          type: "string"
+          example: "1"
+        create_by:
+          type: "string"
+          example: "1"
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        deleted_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        created_date_time:
+          type: "string"
+          example: "2022-09-24 10:45:15"
+    Deletebranch:
+      type: object
+      properties:
+        branch_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here Branch_id is the id  which is get while creation of branch and it can get from getbranch under branch"
+        deleted_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Addbranchfee:
+      type: object
+      properties:
+        branch_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here Branch_id is the id  which is get while creation of branch and it can get from getbranch under branch"
+        sub_fee_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here sub_fee_id is the id which is get while creation of fee and it can get from getfee under fee"
+        amount:
+          type: "string"
+          example: "123"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55" 
+          description: "Here  org_id  is the id  which is get while creation of organization and it can get from getorg under org"
+        status:
+          type: "string"
+          example: "1"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Updatebranchfee:
+      type: object
+      properties:
+        branch_fee_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here branch_fee_id  is the id which is get while creation of branchfee and it can get from getbranchfee under branchfee"
+        branch_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here Branch_id is the id  which is get while creation of branch and it can get from getbranch under branch"
+        sub_fee_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here sub_fee_id is the id which is get while creation of fee and it can get from getfee under fee"
+        amount:
+          type: "string"
+          example: "123"
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    GetBranchFee:
+      type: object
+      properties:
+        _id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here _id is the  branch_fee_id  which is get while creation of branchfee"
+        branch_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here Branch_id is the id  which is Id get while creation of branch and it can get from getbranch under branch"
+        sub_fee_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here sub_fee_id is the id which is get while creation of fee and it can get from getfee under fee"
+        amount:
+          type: "string"
+          example: "123"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55" 
+          description: "Here  org_id  is the id  which is get while creation of organization and it can get from getorg under org"
+        status:
+          type: "string"
+          example: "1"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        deleted_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        created_date_time:
+          type: "string"
+          example: "2022-09-24 10:45:15"
+        subfeename:
+          type: "array"
+          example: "[respective fields of subfeename]"
+        branchname:
+          type: "array"
+          example: "[respective fields of branchname]"
+    DeleteBranchFee:
+      type: object
+      properties:
+        branch_fee_id:
+            type: "string"
+            example: "6316f8cbaa00b2e407b90c55"
+            description: "Here branch_fee_id  is the id which is get while creation of branchfee and it can get from getbranchfee under branchfee"
+        deleted_by:
+            type: "string"
+            example: "6316f8cbaa00b2e407b90c55"
+    AddTransaction:
+      type: object
+      properties:
+        student_id:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+          description: "Here student_id is the id which is get while creation of student and it can get from getstudent under student"
+        sub_fee_id:
+          type: "string"
+          example: "6304aa5ce0ef051da2ed8b9d"
+          description: "Here sub_fee_id is the id which is get while creation of fee and it can get from getfee under fee"
+        payment_method:
+          type: "string"
+          example: "C"
+          description: "Here payment methods are three types they are C->cash,B->bank,U->UPI"
+        amount:
+          type: "string"
+          example: "1000"
+        cash:
+          type: "string"
+          example: "500"
+        bank:
+          type: "string"
+          example: "500"
+        upi:
+          type: "string"
+          example: "500"
+        bill_type:
+          type: "string"
+          example: "O"
+          description: "Here bill_type are two types they are O->ole,N->New"
+        transaction_type:
+          type: "string"
+          example: "N"
+          description: "Here transaction_type are two types they are N->normal bill,M->manual bill"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here  org_id  is the id  which is get while creation of organization and it can get from getorg under org"
+    UpdateTransaction:
+      type: object
+      properties:
+        transaction_id:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+          description: "Here transaction_id is the id which is get while creation of transaction and it can get from gettransaction under transaction"
+        student_id:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+          description: "Here student_id is the id which is get while creation of student and it can get from getstudent under student"
+        sub_fee_id:
+          type: "string"
+          example: "6304aa5ce0ef051da2ed8b9d"
+          description: "Here sub_fee_id is the id which is get while creation of fee and it can get from getfee under fee"
+        payment_method:
+          type: "string"
+          example: "C"
+          description: "Here payment methods are three types they are C->cash,B->bank,U->UPI"
+        amount:
+          type: "string"
+          example: "1000"
+        cash:
+          type: "string"
+          example: "500"
+        bank:
+          type: "string"
+          example: "500"
+        upi:
+          type: "string"
+          example: "500"
+        bill_type:
+          type: "string"
+          example: "O"
+          description: "Here bill_type are two types they are O->ole,N->New"
+        status:
+          type: "string"
+          example: "1"
+        transaction_type:
+          type: "string"
+          example: "N"
+          description: "Here transaction_type are two types they are N->normal bill,M->manual bill"
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    AddmanualbillTransaction:
+      type: object
+      properties:
+        student_id:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+          description: "Here student_id is the id which is get while creation of student and it can get from getstudent under student"
+        sub_fee_id:
+          type: "string"
+          example: "6304aa5ce0ef051da2ed8b9d"
+          description: "Here sub_fee_id is the id which is get while creation of fee and it can get from getfee under fee"
+        payment_method:
+          type: "string"
+          example: "C"
+          description: "Here payment methods are three types they are C->cash,B->bank,U->UPI"
+        amount:
+          type: "string"
+          example: "1000"
+        cash:
+          type: "string"
+          example: "500"
+        bank:
+          type: "string"
+          example: "500"
+        upi:
+          type: "string"
+          example: "500"
+        bill_type:
+          type: "string"
+          example: "O"
+          description: "Here bill_type are two types they are O->old bill,N->new bill"
+        status:
+          type: "string"
+          example: "1"
+        transaction_type:
+          type: "string"
+          example: "N"
+          description: "Here transaction_type are two types they are N->normal bill,M->manual bill"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55" 
+          description: "Here  org_id  is the id  which is get while creation of organization and it can get from getorg under org"
+    UpdatemanualbillTransaction:
+      type: object
+      properties:
+        transaction_id:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+          description: "Here transaction_id is the id which is get while creation of transaction and it can get from gettransaction under transaction"
+        student_id:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+          description: "Here student_id is the id which is get while creation of student and it can get from getstudent under student"
+        sub_fee_id:
+          type: "string"
+          example: "6304aa5ce0ef051da2ed8b9d"
+          description: "Here sub_fee_id is the id which is get while creation of fee and it can get from getfee under fee"
+        payment_method:
+          type: "string"
+          example: "C"
+          description: "Here payment methods are three types they are C->cash,B->bank,U->UPI"
+        amount:
+          type: "string"
+          example: "1000"
+        cash:
+          type: "string"
+          example: "500"
+        bank:
+          type: "string"
+          example: "500"
+        upi:
+          type: "string"
+          example: "500"
+        bill_type:
+          type: "string"
+          example: "O"
+          description: "Here bill_type are two types they are O->old bill,N->new bill"
+        status:
+          type: "string"
+          example: "1"
+        transaction_type:
+          type: "string"
+          example: "N"
+          description: "Here transaction_type are two types they are N->normal bill,M->manual bill"
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Gettransaction:
+      type: object
+      properties:
+        _id:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+          description: "Here _id is the transaction_id which is get while creation of transaction and it can get from gettransaction under transaction"
+        student_id:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+          description: "Here student_id is the id which is get while creation of student and it can get from getstudent under student"
+        sub_fee_id:
+          type: "string"
+          example: "6304aa5ce0ef051da2ed8b9d"
+          description: "Here sub_fee_id is the id which is get while creation of fee and it can get from getfee under fee"
+        payment_method:
+          type: "string"
+          example: "C"
+          description: "Here payment methods are three types they are C->cash,B->bank,U->UPI"
+        amount:
+          type: "string"
+          example: "1000"
+        cash:
+          type: "string"
+          example: "500"
+        bank:
+          type: "string"
+          example: "500"
+        upi:
+          type: "string"
+          example: "500"
+        bill_type:
+          type: "string"
+          example: "O"
+          description: "Here bill_type are two types they are O->old bill,N->new bill"
+        status:
+          type: "string"
+          example: "1"
+        transaction_type:
+          type: "string"
+          example: "N"
+          description: "Here transaction_type are two types they are N->normal bill,M->manual bill"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here  org_id  is the id  which is get while creation of organization and it can get from getorg under org"
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        created_date_time:
+          type: "string"
+          example: "2022-09-24 10:45:15"
+        studentname:
+          type: "array"
+          example: "[respective fields of studentname]"
+    Finalamtstudent:
+      type: object
+      properties:
+        student_id:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+          description: "Here student_id is the id which is get while creation of student and it can get from getstudent under student"
+        sub_fee_id:
+          type: "string"
+          example: "6304aa5ce0ef051da2ed8b9d"
+          description: "Here sub_fee_id is the id which is get while creation of fee and it can get from getfee under fee"
+        payment_method:
+          type: "string"
+          example: "C"
+          description: "Here payment methods are three types they are C->cash,B->bank,U->UPI"
+        amount:
+          type: "string"
+          example: "1000"
+        cash:
+          type: "string"
+          example: "500"
+        bank:
+          type: "string"
+          example: "500"
+        upi:
+          type: "string"
+          example: "500"
+        bill_type:
+          type: "string"
+          example: "O"
+          description: "Here bill_type are two types they are O->old bill,N->new bill"
+        status:
+          type: "string"
+          example: "123"
+        transaction_type:
+          type: "string"
+          example: "N"
+          description: "Here transaction_type are two types they are N->normal bill,M->manual bill"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here  org_id  is the id  which is get while creation of organization and it can get from getorg under org"
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Finalamtsettlement:
+      type: object
+      properties:
+        student_id:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+          description: "Here student_id is the id which is get while creation of student and it can get from getstudent under student"
+        fee_id:
+          type: "string"
+          example: "6304aa5ce0ef051da2ed8b9d"
+        payment_method:
+          type: "string"
+          example: "C"
+          description: "Here payment methods are three types they are C->cash,B->bank,U->UPI"
+        amount:
+          type: "string"
+          example: "1000"
+        cash:
+          type: "string"
+          example: "500"
+        bank:
+          type: "string"
+          example: "500"
+        upi:
+          type: "string"
+          example: "500"
+        bill_type:
+          type: "string"
+          example: "O"
+          description: "Here bill_type are two types they are O->old bill,N->new bill"
+        status:
+          type: "string"
+          example: "123"
+        transaction_type:
+          type: "string"
+          example: "N"
+          description: "Here transaction_type are two types they are N->normal bill,M->manual bill"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55" 
+          description: "Here  org_id  is the id  which is get while creation of organization and it can get from getorg under org"
+    AddRole:
+      type: object
+      properties:
+        role_name:
+          type: "string"
+          example: "Admin"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"  
+          description: "Here  org_id  is the id  which is get while creation of organization and it can get from getorg under org" 
+    UpdateRole:
+      type: object
+      properties:
+        role_id:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+          description: "Here role_id is the id which is get while creation of role and it can get from getrole under role"
+        role_name:
+          type: "string"
+          example: "Tharani"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        status:
+          type: "string"
+          example: "1"
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Getrole:
+      type: object
+      properties:
+        _id:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+          description: "This id is the role_id  which is get while creating the role"
+        role_name:
+          type: "string"
+          example: "Admin"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"   
+          description: "Here  org_id  is the id  which is get while creation of organization and it can get from getorg under org" 
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        deleted_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        created_date_time:
+          type: "string"
+          example: "2022-09-24 10:45:15"
+        status:
+          type: "string"
+          example: "1"
+    DeleteRole:
+      type: object
+      properties:
+        role_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here role_id is the id which is get while creation of role and it can get from getrole under role"
+        deleted_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    AddOlddue:
+      type: object
+      properties:
+        student_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here student_id is the id which is get while creation of student and it can get from getstudent under student"
+        due_amount:
+          type: "string"
+          example: "1000"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"   
+          description: "Here  org_id  is the id  which is get while creation of organization and it can get from getorg under org"
+    UpdateOlddue:
+      type: object
+      properties:
+        autoid:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+          description: "Here autoid the id which is get while creation of olddue of student and it can get from getolddue under olddue"
+        student_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here student_id is the id which is get while creation of student and it can get from getstudent under student"
+        due_amount:
+          type: "string"
+          example: "1000"
+        update_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    GetOlddue:
+      type: object
+      properties:
+        _id:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+          description: "Here _id is the autoid which is get while creation of olddue of student and it can get from getolddue under olddue"
+        student_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here student_id is the id which is get while creation of student and it can get from getstudent under student"
+        due_amount:
+          type: "string"
+          example: "1000"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"   
+          description: "Here  org_id  is the id  which is get while creation of organization and it can get from getorg under org"
+        status:
+          type: "string"
+          example: "1"
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        deleted_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        created_date_time:
+          type: "string"
+          example: "2022-09-24 10:45:15"
+    DeleteOlddue:
+      type: object
+      properties:
+        autoid:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here autoid the id which is get while creation of olddue of student and it can get from getolddue under olddue"
+        deleted_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    AddExpenses:
+      type: object
+      properties:
+        amount:
+          type: "string"
+          example: "1000"
+        expenses_to:
+          type: "string"
+          example: "OLD CASH BALANCE"
+        expense_type:
+          type: "string"
+          example: "C"
+        reason:
+          type: "string"
+          example: "OLD CASH BALANCE"
+        type:
+          type: "string"
+          example: "C"
+        accept_url:
+          type: "string"
+          example: "abc"
+        reject_url:
+          type: "string"
+          example: "abc"
+        wait_url:
+          type: "string"
+          example: "abc"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"   
+          description: "Here  org_id  is the id  which is get while creation of organization and it can get from getorg under org"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    AddOrg:
+      type: object
+      properties:
+        org_name:
+          type: "string"
+          example: "AGL"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    UpdateOrg:
+      type: object
+      properties:
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"   
+          description: "Here  org_id  is the id  which is get while creation of organization"
+        org_name:
+          type: "string"
+          example: "AGL"
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        status:
+          type: "string"
+          example: "1"
+    GetOrg:
+      type: object
+      properties:
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"   
+          description: "Here _id is the  org_id  which is get while creation of organization"
+        org_name:
+          type: "string"
+          example: "AGL"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        status:
+          type: "string"
+          example: "1"
+        created_date_time:
+          type: "string"
+          example: "2022-09-24 10:45:15"
+    AddBasemenu:
+      type: object
+      properties:
+        menu_name:
+          type: "string"
+          example: "Master"
+        menu_type:
+          type: "string"
+          example: "p"
+          description: "Here menu_type are of two type p->parent-menu,s->sub-menu"
+        menu_order:
+          type: "string"
+          example: "1"   
+        menu_web_url:
+          type: "string"
+          example: "/dashboard"
+        parent_id:
+          type: "string"
+          example: "6304aa5ce0ef051da2ed8b9d"
+        web_class_name:
+          type: "string"
+          example: "menu-toggle has-dropdown"
+        web_icon:
+          type: "string"
+          example: "briefcase"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    UpdateBasemenu:
+      type: object
+      properties:
+        menu_object_id:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+          description: "Here menu_object_id is the id which is get while creation of basemenu and it can get from getbasemenu under basemenu"
+        menu_name:
+          type: "string"
+          example: "Master"
+        menu_type:
+          type: "string"
+          example: "p"
+          description: "Here menu_type are of two type p->parent-menu,s->sub-menu"
+        menu_order:
+          type: "string"
+          example: "1"   
+        menu_web_url:
+          type: "string"
+          example: "/dashboard"
+        parent_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        web_class_name:
+          type: "string"
+          example: "menu-toggle has-dropdown"
+        web_icon:
+          type: "string"
+          example: "briefcase"
+        status:
+          type: "string"
+          example: "1"
+        update_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    GetBasemenu:
+      type: object
+      properties:
+        _id:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+          description: "Here _id is the  menu_object_id which is get while creation of basemenu and it can get from getbasemenu under basemenu"
+        menu_name:
+          type: "string"
+          example: "Master"
+        menu_type:
+          type: "string"
+          example: "p"
+        menu_order:
+          type: "string"
+          example: "1"   
+        menu_web_url:
+          type: "string"
+          example: "/dashboard"
+        parent_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        web_class_name:
+          type: "string"
+          example: "menu-toggle has-dropdown"
+        web_icon:
+          type: "string"
+          example: "briefcase" 
+        status:
+          type: "string"
+          example: "1"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        deleted_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        created_date_time:
+          type: "string"
+          example: "2022-09-24 10:45:15"
+    DeleteBasemenu:
+      type: object
+      properties:
+        menu_object_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here menu_object_id is the id which is get while creation of basemenu and it can get from getbasemenu under basemenu"
+        deleted_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Addmenuorg:
+      type: object
+      properties:
+        menu_object_id:
+          type: "array"
+          example: ["6316f8cbaa00b2e407b90c55"]
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Getmenuorg:
+      type: object
+      properties:
+        _id:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+          description: "Here _id is the org_menu_id which is get while creation of basemenu and it can get from Getmenuorg under menuorg"
+        menu_object_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        status:
+          type: "string"
+          example: "1"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        created_date_time:
+          type: "string"
+          example: "2022-09-24 10:45:15"
+    Addrolemenuorg:
+      type: object
+      properties:
+        menu_object_id:
+          type: "array"
+          example: ["6316f8cbaa00b2e407b90c55"]
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        role_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Getrolemenuorg:
+      type: object
+      properties:
+        _id:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+          description: "Here _id is the role_org_menu_id which is get while creation of rolemenuorg and it can get from Getrolemenuorg under rolemenuorg"
+        menu_object_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        role_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        status:
+          type: "string"
+          example: "1"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        deleted_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        created_date_time:
+          type: "string"
+          example: "2022-09-24 10:45:15"
+    Deleterolemenuorg:
+      type: object
+      properties:
+        role_org_menu_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here role_org_menu_id the id which is get while creation of roleorgmenu  and it can get from getorgmenu under orgmenu"
+        deleted_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+      AllocatebranchTostudent:
+        type: object
+        properties:
+          student_id:
+            type: "string"
+            example: "6316f8cbaa00b2e407b90c55"
+          branch_id:
+            type: "string"
+            example: "6316f8cbaa00b2e407b90c55"
+          year:
+            type: "string"
+            example: "2022"
+          org_id:
+            type: "string"
+            example: "6316f8cbaa00b2e407b90c55"
+          created_by:
+            type: "string"
+            example: "6316f8cbaa00b2e407b90c55"
+    Addcalendaryear:
+      type: object
+      properties:
+        calendar_year:
+          type: "string"
+          example: "2020-2021"
+        calendar_year_value:
+          type: "string"
+          example: "2020"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Updatecalendaryear:
+      type: object
+      properties:
+        calendar_year_id:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+        calendar_year:
+          type: "string"
+          example: "2020-2021"
+        calendar_year_value:
+          type: "string"
+          example: "2020"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        status:
+          type: "string"
+          example: "1" 
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Getcalendaryear:
+      type: object
+      properties:
+        _id:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+          description: "Here _id the calendar_year_id which is get while creation of calendaryear  and it can get from Getcalendaryear under calendaryear"
+        calendar_year:
+          type: "string"
+          example: "2020-2021"
+        calendar_year_value:
+          type: "string"
+          example: "2020"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        status:
+          type: "string"
+          example: "1" 
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        deleted_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        created_date_time:
+          type: "string"
+          example: "2022-09-24 10:45:15"
+        current_active:
+          type: "string"
+          example: "1"
+    Deletecalendaryear:
+      type: object
+      properties:
+        calendar_year_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here calendar_year_id the id which is get while creation of calender year  and it can get from getorgmenu under calendar year"
+        deleted_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Addacademicyear:
+      type: object
+      properties:
+        academic_year:
+          type: "string"
+          example: "1st year"
+        academic_year_value:
+          type: "string"
+          example: "1"
+        order:
+          type: "string"
+          example: "1"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Updateacademicyear:
+      type: object
+      properties:
+        academic_year_id:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+        academic_year:
+          type: "string"
+          example: "1st year"
+        academic_year_value:
+          type: "string"
+          example: "1"
+        order:
+          type: "string"
+          example: "1"
+        status:
+          type: "string"
+          example: "1" 
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Getacademicyear:
+      type: object
+      properties:
+        _id:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+          description: "Here _id the academic_year_id which is get while creation of academic_year  and it can get from Getcalendaryear Getacademicyear under academic_year"
+        academic_year:
+          type: "string"
+          example: "1st year"
+        academic_year_value:
+          type: "string"
+          example: "1"
+        order:
+          type: "string"
+          example: "1"
+        status:
+          type: "string"
+          example: "1" 
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        updated_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        deleted_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        created_date_time:
+          type: "string"
+          example: "2022-09-24 10:45:15"
+    Deleteacademicyear:
+      type: object
+      properties:
+        academic_year_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+          description: "Here academic_year_id the id which is get while creation of academic year  and it can get from getorgmenu under academic year"
+        deleted_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Addconcession:
+      type: object
+      properties:
+        sub_fee_id:
+          example: "6316f8cbaa00b2e407b90c55"
+          type: string
+        percentage:
+          example: "1"
+          type: string
+    Addconcessionfee:
+      type: object
+      properties:
+        concession_slab:
+          type: "string"
+          example: "slabname"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        # branch_id:
+        #   type: "string"
+        #   example: "6316f8cbaa00b2e407b90c55"
+        # academic_years_id:
+        #   type: "string"
+        #   example: "6316f8cbaa00b2e407b90c55"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        status:
+          type: "string"
+          example: "1"
+    Updateconcession:
+      type: object
+      properties:
+        sub_fee_id:
+          example: "6316f8cbaa00b2e407b90c55"
+          type: string
+        percentage:
+          example: "1"
+          type: string
+    Updateconcessionfee:
+      type: object
+      properties:
+        concession_slab_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Addstudconcession:
+      type: object
+      properties:
+        sub_fee_id:
+          type: string
+          example: "6316f8cbaa00b2e407b90c55"
+        concession:
+          type: string
+          example: "1"
+        concession_status:
+          type: string
+          example: "p"
+    Addstudconcessionfee:
+      type: object
+      properties:
+        concession_slab_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        student_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        academic_years_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        # calendar_years_id:
+        #   type: "string"
+        #   example: "6316f8cbaa00b2e407b90c55"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    Getconcession:
+    type: object
+      properties:
+        _id:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+        concession_slab:
+          type: "string"
+          example: "slab1"
+        concessions:
+          type: "object"
+          example: "1"
+        # branch_id:
+        #   type: "string"
+        #   example: "6316f8cbaa00b2e407b90c55"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        created_date_time:
+          type: "string"
+          example: "2022-09-24 10:45:15"
+    Getstudconcession:
+    type: object
+      properties:
+        _id:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+        student_id:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+        concession_slab_id:
+          type: "string"
+          example: "631701117de46e0d0c76577f"
+        concessions:
+          type: "object"
+          example: "1"
+        org_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        created_by:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        created_date_time:
+          type: "string"
+          example: "2022-09-24 10:45:15"
+        academic_years_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+        calendar_years_id:
+          type: "string"
+          example: "6316f8cbaa00b2e407b90c55"
+    GetStudamtdetails:
+    type: object
+      properties:
+        student_id:
+          type: "string"
+          example: "22-ABCD-01"
+        hall_ticket_number:
+          type: "string"
+          example: "119149101045"
+        student_phone_number:
+          type: "string"
+          example: "1234567890"
+        feedetails:
+          type: "array"
+          example: "[list of amountdetails]"
+    Getbilldetails:
+    type: object
+      properties:
+      studentname:
+        type: "string"
+        example: "abc"
+      student_id:
+        type: "string"
+        example: "22-ABCD-01"
+      date:
+        type: "string"
+        example: "2022-11-26"
+      bill_number:
+        type: "string"
+        example: "202211261"
+      total_paid_amt:
+        type: "string"
+        example: "1000"
+    GetExpenses:
+    type: object
+      properties:
+      amount:
+        type: "string"
+        example: "1000"
+      expenses_to:
+        type: "string"
+        example: "OLD CASH BALANCE"
+      expense_type:
+        type: "string"
+        example: "C"
+      reason:
+        type: "string"
+        example: "OLD CASH BALANCE"
+      type:
+        type: "string"
+        example: "C"
+      accept_url:
+        type: "string"
+        example: "abc"
+      reject_url:
+        type: "string"
+        example: "abc"
+      wait_url:
+        type: "string"
+        example: "abc"
+      org_id:
+        type: "string"
+        example: "6316f8cbaa00b2e407b90c55"   
+      created_by:
+        type: "string"
+        example: "6316f8cbaa00b2e407b90c55"
+      created_date_time:
+        type: "string"
+        example: "2022-09-24 10:45:15"
+      date:
+        type: "string"
+        example: "2022-09-24"

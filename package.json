@@ -1,0 +1,62 @@
+{
+  "name": "tvs-express",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^3.2.3",
+    "aws-sdk": "^2.1104.0",
+    "axios": "^0.27.2",
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.1",
+    "bull": "^4.10.0",
+    "bwip-js": "^3.0.4",
+    "config": "^3.3.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.2",
+    "express-mysql-session": "^2.1.7",
+    "express-session": "^1.17.2",
+    "express-validator": "^6.14.2",
+    "firebase-admin": "^10.0.2",
+    "ioredis": "^5.2.3",
+    "jsonwebtoken": "^8.5.1",
+    "lowdb": "^3.0.0",
+    "mime": "^3.0.0",
+    "moment": "^2.29.1",
+    "mongodb": "^4.8.1",
+    "mongodb-extended-json": "^1.11.1",
+    "mongoose": "^6.5.2",
+    "mongoose-aggregate-paginate-v2": "^1.0.6",
+    "mongoose-auto-increment": "^5.0.1",
+    "mongoose-paginate-v2": "^1.7.1",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.7.5",
+    "nodemon": "^2.0.19",
+    "pdf-creator-node": "^2.3.4",
+    "redis": "^4.3.1",
+    "should": "^13.2.3",
+    "swagger-ui-express": "^4.3.0",
+    "uuid": "^8.3.2",
+    "xls-to-json-lc": "^0.3.4",
+    "xlsx-to-json-lc": "^0.5.0",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "chai-http": "^4.3.0",
+    "mocha": "^10.0.0",
+    "supertest": "^6.2.4"
+  }
+}
