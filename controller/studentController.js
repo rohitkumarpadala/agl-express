@@ -170,6 +170,8 @@ const getStud = async (request, response) => {
     let academic_years_id = request.body.academic_years_id;
     // let cyearcheck =request.body.cyearcheck;
     let cyearid = await getCurrentCalendarYearIDByOrgId(org_id);
+  const today = new Date().toISOString().split("T")[0];
+  const regex = new RegExp("^" + today);
     calendar_years_id = calendar_years_id || cyearid;
     if (mongoose.isValidObjectId(org_id)) {
       if (branch_id && academic_years_id) {
@@ -177,6 +179,7 @@ const getStud = async (request, response) => {
           org_id: org_id,
           branch_id: branch_id,
           academic_years_id: academic_years_id,
+          created_date_time: { $regex: regex },
         };
         if (calendar_years_id) match["calendar_years_id"] = calendar_years_id;
 

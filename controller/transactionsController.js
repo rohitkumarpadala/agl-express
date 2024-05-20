@@ -3526,6 +3526,8 @@ const getrelievestudentdashboarddetails = async (request, response) => {
     try {
       let org_id = request.body.org_id;
       let cyearid = await getCurrentCalendarYearIDByOrgId(org_id);
+      // let cyearid
+      console.log("cyear id is ",cyearid)
       let allocstatus = request.body.status;
 
       let match = { org_id: org_id, status: request.body.status };
@@ -3534,9 +3536,9 @@ const getrelievestudentdashboarddetails = async (request, response) => {
       }
       const relievestudentvalue = await allocstudent
         .aggregate([
-          {
-            $match: match,
-          },
+          // {
+          //   $match: match,
+          // },
 
           {
             $lookup: {
@@ -3569,11 +3571,14 @@ const getrelievestudentdashboarddetails = async (request, response) => {
         feedetails.push(await getstudentfinaldueamount(item));
       }
       itemsObj = await Promise.all(feedetails);
+      // console.log("itemsObj is", itemsObj.length);
+      // console.log("relievestudentvalue is", relievestudentvalue.length);
+
       let totaldueamount = 0;
       for (let i = 0; i < itemsObj.length; i++) {
         totaldueamount += parseFloat(itemsObj[i].total_due_amt);
       }
-
+      // console.log("feedetails ---->", totaldueamount);
       response.status(statusCodes.success).json(totaldueamount);
     } catch (e) {
       response
@@ -3944,7 +3949,8 @@ const getrelievestudentdetails = async (request, response) => {
     try {
       let branch_id = request.body.branch_id;
       let org_id = request.body.org_id;
-      let cyearid = await getCurrentCalendarYearIDByOrgId(org_id);
+      // let cyearid = await getCurrentCalendarYearIDByOrgId(org_id);
+      let cyearid;
       let academic_years_id = request.body.academic_years_id;
       let calendar_years_id = request.body.calendar_years_id || cyearid;
       let allocstatus = request.body.status;
@@ -4819,6 +4825,10 @@ const TotalCashIN = (req) => {
       .sort({ date: -1 });
     let obj = { cashInHand: 0, cashInBank: 0, cashInupi: 0 };
     let value = await expencestilldate(org_id, date, 1);
+
+    // console.log("day_wise_totals is ", day_wise_totals);
+    // console.log("value is ", value);
+
     if (day_wise_totals.length > 0) {
       obj["cashInHand"] = (
         parseFloat(day_wise_totals[0].cash) - parseFloat(value.cash_value ?? 0)
